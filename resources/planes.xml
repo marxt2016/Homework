@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xmlbody>
+    <planes>
+        <p>
+            <planetype>passenger</planetype>
+            <model>boing</model>
+            <numberOfSeats>150</numberOfSeats>
+            <cargoVolume>500</cargoVolume>
+            <averageFlyingSpeed> </averageFlyingSpeed>
+            <averageRidingSpeed>200.4</averageRidingSpeed>
+            <averageFlyingDistance>2000</averageFlyingDistance>
+
+        </p>
+        <p>
+            <planetype>passenger</planetype>
+            <model>boing</model>
+            <numberOfSeats>150</numberOfSeats>
+            <cargoVolume>500</cargoVolume>
+            <averageFlyingSpeed> </averageFlyingSpeed>
+            <averageRidingSpeed>200.4</averageRidingSpeed>
+            <averageFlyingDistance>2000</averageFlyingDistance>
+
+        </p>
+        <c>
+            <planetype>cargo</planetype>
+            <model>airbus</model>
+            <numberOfSeats> </numberOfSeats>
+            <cargoVolume>150</cargoVolume>
+            <averageFlyingSpeed>200.4</averageFlyingSpeed>
+            <averageRidingSpeed> </averageRidingSpeed>
+            <averageFlyingDistance>120000.7</averageFlyingDistance>
+        </c>
+        <c>
+            <planetype>cargo</planetype>
+            <model>airbus1</model>
+            <numberOfSeats> </numberOfSeats>
+            <cargoVolume>1501</cargoVolume>
+            <averageFlyingSpeed>200.4</averageFlyingSpeed>
+            <averageRidingSpeed> </averageRidingSpeed>
+            <averageFlyingDistance>17000</averageFlyingDistance>
+        </c>
+    </planes>
+</xmlbody>
