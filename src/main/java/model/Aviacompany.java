@@ -1,5 +1,4 @@
 package model;
-import XMLParser.Parser;
 
 import java.util.*;
 
@@ -29,28 +28,29 @@ public class Aviacompany implements Actions {
                 '}';
     }
 
-    @Override
+
     public int calculateNumberOfPassengers(List<Plane> passengerPlanesList){
         int numberOfSeats = 0;
-        for (int i=0; i<passengerPlanesList.size();i++ ) {
-            PassengerPlane pp= (PassengerPlane)passengerPlanesList.get(i);
+        for (Plane plane:passengerPlanesList) {
+            PassengerPlane pp= (PassengerPlane)plane;
             numberOfSeats += pp.getNumberOfSeats();
         }
         System.out.println("Total number of seats = " +numberOfSeats);
         return numberOfSeats;
     }
-    @Override
+
     public int calculateCargoVolume(List<Plane> planesList){
         int cargoVolume = 0;
-        for (int i=0; i<planesList.size();i++ ) {
-            cargoVolume += planesList.get(i).getCargoVolume();;
+        for (Plane plane:planesList) {
+            cargoVolume += plane.getCargoVolume();
         }
         System.out.println("Total cargo volume = " +cargoVolume);
         return cargoVolume;
     }
 
-    public static List generatePlanesList(String pathtofile, String planeType){
-        List planesList = null;
+
+    public static List<Plane> generatePlanesList(String pathtofile, String planeType){
+        List <Plane> planesList = null;
         switch(planeType){
             case "cargo":
                 planesList=new CargoPlane().createPlanesList(pathtofile, "c");
@@ -61,25 +61,26 @@ public class Aviacompany implements Actions {
             default:
                 System.out.println("Incorrect plane type");
         }
+
         return planesList;
 
     }
 
-    public List<Plane> generateAllPlanesList(String pathtofile){
-        List cargoPlanesList = generatePlanesList(pathtofile, "cargo");
-        List passengerPlanesList = generatePlanesList(pathtofile, "passenger");
+    public static List<Plane> generateAllPlanesList(String pathtofile){
+        List <Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
+        List <Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
         List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
         allPlanesList.addAll(cargoPlanesList);
         return allPlanesList;
     }
 
     public void printAllPlanesList(String pathtofile){
-        List cargoPlanesList = generatePlanesList(pathtofile, "cargo");
-        List passengerPlanesList = generatePlanesList(pathtofile, "passenger");
+        List <Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
+        List <Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
         List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
         allPlanesList.addAll(cargoPlanesList);
-        for (int i=0; i<allPlanesList.size();i++ ) {
-            System.out.println(allPlanesList.get(i).toString());
+        for (Plane plane:allPlanesList ) {
+            System.out.println(plane.toString());
         }
     }
 
@@ -94,8 +95,8 @@ public class Aviacompany implements Actions {
                 return 0;
             }
         });
-        for (int i=0; i<planesList.size();i++ ) {
-            System.out.println(planesList.get(i).toString());
+        for (Plane plane:planesList  ) {
+            System.out.println(plane.toString());
         }
 
 

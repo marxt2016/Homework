@@ -1,6 +1,6 @@
 package model;
 
-import XMLParser.Parser;
+import xmlParser.Parser;
 
 import java.util.ArrayList;
 import java.util.List;

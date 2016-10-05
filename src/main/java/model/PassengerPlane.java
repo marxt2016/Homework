@@ -1,6 +1,6 @@
 package model;
 
-import XMLParser.Parser;
+import xmlParser.Parser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +57,7 @@ public class PassengerPlane extends Plane {
 
     @Override
     public String showModelToConsole(Plane plane){
-        System.out.println("Model = " + this.model);
+       // System.out.println("Model = " + this.model);
         return this.model;
     }
 

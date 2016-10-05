@@ -7,6 +7,14 @@ import java.util.ArrayList;
  */
 public abstract class Plane {
 
+    public String getModel() {
+        return model;
+    }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
     private String model;
     private int cargoVolume;
     private float averageRidingSpeed;
