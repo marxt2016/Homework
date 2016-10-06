@@ -8,12 +8,13 @@ import model.Aviacompany;
 import model.Plane;
 import search.SearchByParameters;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Runner {
 
-    public static final String PATH_TO_FILE = "D:\\workspace\\Homework\\src\\main\\resources\\planes.xml";
+    public static final String PATH_TO_FILE = "D:\\workspace\\Homework\\src\\main\\resources\\lanes.xml";
 
 
     public static void main (String args[]){
@@ -42,23 +43,35 @@ public class Runner {
                     break;
                 case 2:
                     System.out.println("Sorted by distance planes list:\n ");
-                    aviacompany.sortPlanesByDistance(aviacompany.generateAllPlanesList(PATH_TO_FILE));
+                    aviacompany.sortPlanesByDistance(Aviacompany.generateAllPlanesList(PATH_TO_FILE));
                     break;
                 case 3:
                     System.out.println("Please provide plane model: ");
                     String value1 = new Scanner(System.in).nextLine();
-                    System.out.println("Please provide cargo volume: ");
-                    int value2 = new Scanner(System.in).nextInt();
-                    try {
-                        List<Plane> result = SearchByParameters.findByParametes(value1, value2, PATH_TO_FILE);
-                        if( result.size()>0){
-                           for (Plane plane:result){
-                               System.out.println(plane);
-                           }
+                    System.out.println(value1.getClass());
+                    boolean repeatForCargoInput = true;
+                    do {
+                        System.out.println("Please provide cargo volume: ");
+                        try {
+                            int value2 = new Scanner(System.in).nextInt();
+                            repeatForCargoInput = false;
+                            break;
+                        } catch (InputMismatchException e) {
+                            System.out.println(" Incorrect value was provided.\n Please try one more time");
                         }
-                    }catch (FindByParametersException e){
-                        System.out.println("No planes with specified parameters");
-                    }
+
+                    }while(true);
+//                    try {
+//                        List<Plane> result = SearchByParameters.findByParametes(value1, value2, PATH_TO_FILE);
+//                        if( result.size()>0){
+//                           for (Plane plane:result){
+//                               System.out.println(plane);
+//                           }
+//                        }
+//                    }catch (FindByParametersException e){
+//                        System.out.println(e.getMessage());
+//                    }
+
                     break;
                 case 4:
                     System.out.println("Total number of passengers: \n ");
@@ -66,7 +79,7 @@ public class Runner {
                     break;
                 case 5:
                     System.out.println("Total cargo volume: \n ");
-                    aviacompany.calculateCargoVolume(aviacompany.generateAllPlanesList(PATH_TO_FILE));
+                    aviacompany.calculateCargoVolume(Aviacompany.generateAllPlanesList(PATH_TO_FILE));
                     break;
                 case 0:
                     System.out.println("Completed!");
