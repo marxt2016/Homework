@@ -25,6 +25,17 @@
   </component>
   <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" assert-keyword="true" jdk-15="true" project-jdk-name="1.8" project-jdk-type="JavaSDK" />
   <component name="SvnBranchConfigurationManager">
+    <option name="myConfigurationMap">
+      <map>
+        <entry key="$PROJECT_DIR$/../TAframework_m">
+          <value>
+            <SvnBranchConfiguration>
+              <option name="trunkUrl" value="https://svnmsq.epam.com/epm-cdp/Automated_Testing/playground/ru/henadzi_vrubleuski/folder_for_hometask_module7_3/olga_melnikova/TAframework_m" />
+            </SvnBranchConfiguration>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="mySupportsUserInfoFilter" value="true" />
   </component>
 </project>

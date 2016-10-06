@@ -1,7 +1,7 @@
 package exceptions;
 
 /**
- * Created by qwer on 02.10.2016.
+ * Created by OM on 02.10.2016.
  */
 public class FindByParametersException extends Exception{
 

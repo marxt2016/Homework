@@ -1,5 +1,7 @@
 package model;
 
+import exceptions.FileNotFoundException;
+
 import java.util.*;
 
 /**
@@ -74,13 +76,17 @@ public class Aviacompany implements Actions {
         return allPlanesList;
     }
 
-    public void printAllPlanesList(String pathtofile){
-        List <Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
-        List <Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
-        List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
-        allPlanesList.addAll(cargoPlanesList);
-        for (Plane plane:allPlanesList ) {
-            System.out.println(plane.toString());
+    public void printAllPlanesList(String pathtofile) throws FileNotFoundException{
+        if (pathtofile.length()>0) {
+            List<Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
+            List<Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
+            List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
+            allPlanesList.addAll(cargoPlanesList);
+            for (Plane plane : allPlanesList) {
+                System.out.println(plane.toString());
+            }
+        } else{
+            throw new FileNotFoundException();
         }
     }
 

@@ -3,6 +3,7 @@ package runner;
 /**
  * Created by OM on 02.10.2016.
  */
+import exceptions.FileNotFoundException;
 import exceptions.FindByParametersException;
 import model.Aviacompany;
 import model.Plane;
@@ -14,7 +15,7 @@ import java.util.Scanner;
 
 public class Runner {
 
-    public static final String PATH_TO_FILE = "D:\\workspace\\Homework\\src\\main\\resources\\lanes.xml";
+    public static final String PATH_TO_FILE = "D:\\workspace\\Homework\\src\\main\\resources\\planes.xml";
 
 
     public static void main (String args[]){
@@ -29,8 +30,6 @@ public class Runner {
                                "4 - provide total available number of passengers;\n" +
                                 "5 - provide total available cargo capacity;\n" +
                                 "0 - exit.");
-            //System.out.println("Please select an option: ");
-
             Scanner scanner = new Scanner(System.in);
             int action = scanner.nextInt();
             Aviacompany aviacompany = new Aviacompany();
@@ -39,7 +38,11 @@ public class Runner {
                 case 1:
                     aviacompany.setName("MyCompany");
                     System.out.println(aviacompany.toString() + "  has the following planes list:\n");
-                    aviacompany.printAllPlanesList(PATH_TO_FILE);
+                    try {
+                        aviacompany.printAllPlanesList(PATH_TO_FILE);
+                    }catch(FileNotFoundException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 2:
                     System.out.println("Sorted by distance planes list:\n ");
@@ -48,30 +51,29 @@ public class Runner {
                 case 3:
                     System.out.println("Please provide plane model: ");
                     String value1 = new Scanner(System.in).nextLine();
-                    System.out.println(value1.getClass());
+                    int value;
                     boolean repeatForCargoInput = true;
                     do {
                         System.out.println("Please provide cargo volume: ");
                         try {
-                            int value2 = new Scanner(System.in).nextInt();
+                            value = new Scanner(System.in).nextInt();
                             repeatForCargoInput = false;
                             break;
                         } catch (InputMismatchException e) {
                             System.out.println(" Incorrect value was provided.\n Please try one more time");
                         }
-
                     }while(true);
-//                    try {
-//                        List<Plane> result = SearchByParameters.findByParametes(value1, value2, PATH_TO_FILE);
-//                        if( result.size()>0){
-//                           for (Plane plane:result){
-//                               System.out.println(plane);
-//                           }
-//                        }
-//                    }catch (FindByParametersException e){
-//                        System.out.println(e.getMessage());
-//                    }
-
+                    int value2 = value;
+                    try {
+                        List<Plane> result = SearchByParameters.findByParametes(value1, value2, PATH_TO_FILE);
+                        if( result.size()>0){
+                           for (Plane plane:result){
+                               System.out.println(plane);
+                           }
+                        }
+                    }catch (FindByParametersException e){
+                        System.out.println(e.getMessage());
+                    }
                     break;
                 case 4:
                     System.out.println("Total number of passengers: \n ");
@@ -90,19 +92,5 @@ public class Runner {
 
             }
         }
-
-
-
-
-
-
-//        Aviacompany aviacompany = new Aviacompany();
-//        aviacompany.setName("MyCompany");
-//        System.out.println(aviacompany.toString());
-//        aviacompany.printAllPlanesList(PATH_TO_FILE);
-//        aviacompany.calculateNumberOfPassengers(Aviacompany.generatePlanesList(PATH_TO_FILE, "passenger"));
-//        aviacompany.calculateCargoVolume(aviacompany.generateAllPlanesList(PATH_TO_FILE));
-//        aviacompany.sortPlanesByDistance(aviacompany.generateAllPlanesList(PATH_TO_FILE));
-
     }
 }
