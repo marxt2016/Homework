@@ -17,7 +17,7 @@ public class SearchByParameters {
         List <Plane> planesList = Aviacompany.generateAllPlanesList(pathtofile);
         List <Plane> results = new ArrayList<>();
         for (Plane plane : planesList) {
-                if (value1.equalsIgnoreCase(plane.getModel()) || (value2 == plane.getCargoVolume())) {
+                if (value1.equalsIgnoreCase(plane.getModel()) | (value2 == plane.getCargoVolume())) {
                     counter ++;
                     results.add(plane);
                 }else{
