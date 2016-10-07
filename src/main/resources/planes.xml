@@ -3,7 +3,7 @@
     <planes>
         <p>
             <planetype>passenger</planetype>
-            <model>boing</model>
+            <model>boeing</model>
             <numberOfSeats>150</numberOfSeats>
             <cargoVolume>500</cargoVolume>
             <averageFlyingSpeed> </averageFlyingSpeed>
@@ -13,7 +13,7 @@
         </p>
         <p>
             <planetype>passenger</planetype>
-            <model>boing</model>
+            <model>boeing</model>
             <numberOfSeats>150</numberOfSeats>
             <cargoVolume>500</cargoVolume>
             <averageFlyingSpeed> </averageFlyingSpeed>

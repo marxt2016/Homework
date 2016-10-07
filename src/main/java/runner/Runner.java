@@ -15,15 +15,20 @@ import java.util.Scanner;
 
 public class Runner {
 
-    public static final String PATH_TO_FILE = "D:\\workspace\\Homework\\src\\main\\resources\\planes.xml";
+    public static final String PATH_TO_FILE = "./src/main/resources/planes.xml";
 
 
     public static void main (String args[]){
 
+
+        main();
+    }
+
+    private static void main() {
         boolean repeat = true;
 
-            while (repeat) {
-                try {
+        while (repeat) {
+            try {
                 System.out.println("Please select an option: \n" +
                         "1 - print all planes in the company; \n" +
                         "2 - sort planes depending on distance; \n" +
@@ -93,9 +98,9 @@ public class Runner {
                         System.out.println();
 
                 }
-            }catch(InputMismatchException e){
-                    System.out.println(" Incorrect value was provided.\n Please try one more time");
-                }
+            } catch (InputMismatchException e) {
+                System.out.println(" Incorrect value was provided.\n Please try one more time");
+            }
         }
     }
 }
