@@ -1,49 +1,140 @@
 package model;
 
-import exceptions.FileNotFoundException;
+import compare.flyingDistanceComparator;
+import exceptions.FindByParametersException;
+import xmlParser.JaxbParser;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
+import java.io.File;
 import java.util.*;
+
 
 /**
  * Created by OM on 02.10.2016.
  */
+
+@XmlRootElement(name = "aviacompany")
+@XmlType(propOrder ={"name","planes"})
 public class Aviacompany implements Calculations {
-
+    public static final String PATH_TO_FILE = "./src/main/resources/aviacompany.xml";
     private String name;
-    public Aviacompany() {    }
+    private List <Plane> planes;
 
-    public Aviacompany(String name) {
+    public Aviacompany(String name, List<Plane> planes) {
         this.name = name;
+        this.planes = planes;
     }
+    public Aviacompany() {    }
 
     public String getName() {
         return name;
     }
+    @XmlElement
     public void setName(String name) {
         this.name = name;
     }
 
+    public List<Plane> getPlanes() {
+        return planes;
+    }
+
+    @XmlElement(name="plane")
+    @XmlElementWrapper
+    public void setPlanes(List<Plane> planes) {
+        this.planes = planes;
+    }
+
     @Override
     public String toString() {
-        return "Aviacompany{" +
+        String result ="Aviacompany{" +
                 "name='" + name + '\'' +
-                '}';
+                ", planes {";
+        if(planes!=null){
+            for (Plane p:planes){
+                result+=p.toString();
+            }
+        }
+        result+="}}";
+        return result;
     }
 
 
-    public int calculateNumberOfPassengers(List<Plane> passengerPlanesList){
-        int numberOfSeats = 0;
-        for (Plane plane:passengerPlanesList) {
-            PassengerPlane pp= (PassengerPlane)plane;
-            numberOfSeats += pp.getNumberOfSeats();
+    public Aviacompany loadPlanesfromSource() throws Exception{
+        JaxbParser parser = new JaxbParser();
+        File file = new File(PATH_TO_FILE);
+        return (Aviacompany) parser.getObject(file, Aviacompany.class);
+    }
+
+    public void printAllPlanes(){
+        try {
+            for (Plane plane: this.getPlanes()){
+                System.out.println(plane.toString());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        System.out.println("Total number of seats = " +numberOfSeats);
+    }
+
+    public  List <Plane> searchPlaneByModelAndCargovolume() throws FindByParametersException {
+        System.out.println("Please provide plane model: ");
+        String value1 = new Scanner(System.in).nextLine();
+        int value;
+        int counter = 0;
+        List<Plane> results = new ArrayList<>();
+        boolean repeatForCargoInput = true;
+        do {
+            System.out.println("Please provide cargo volume: ");
+            try {
+                value = new Scanner(System.in).nextInt();
+                repeatForCargoInput = false;
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(" Incorrect value was provided.\n Please try one more time");
+            }
+        } while (true);
+        int value2 = value;
+
+
+        try {
+            for (Plane plane : this.getPlanes()) {
+                if (value1.equalsIgnoreCase(plane.getModel()) | (value2 == plane.getCargoVolume())) {
+                    counter++;
+                    results.add(plane);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if(counter == 0) {
+            throw new FindByParametersException();
+        }
+
+        if (results.size() > 0) {
+            for (Plane plane : results) {
+                System.out.println(plane);
+            }
+
+        }
+        return results;
+
+    }
+    @Override
+    public int calculateNumberOfPassengers(){
+        int numberOfSeats = 0;
+        for (Plane plane:this.getPlanes()) {
+            numberOfSeats += plane.getNumberOfSeats();
+        }
+        System.out.println("Total number of passengers = " +numberOfSeats);
         return numberOfSeats;
     }
-
-    public int calculateCargoVolume(List<Plane> planesList){
+    @Override
+    public int calculateCargoVolume(){
         int cargoVolume = 0;
-        for (Plane plane:planesList) {
+        for (Plane plane:this.getPlanes()) {
             cargoVolume += plane.getCargoVolume();
         }
         System.out.println("Total cargo volume = " +cargoVolume);
@@ -51,61 +142,18 @@ public class Aviacompany implements Calculations {
     }
 
 
-    public static List<Plane> generatePlanesList(String pathtofile, String planeType){
-        List <Plane> planesList = null;
-        switch(planeType){
-            case "cargo":
-                planesList=new CargoPlane().createPlanesList(pathtofile, "c");
-                break;
-            case "passenger":
-                planesList=new PassengerPlane().createPlanesList(pathtofile, "p");
-                break;
-            default:
-                System.out.println("Incorrect plane type");
-        }
-
-        return planesList;
-
-    }
-
-    public static List<Plane> generateAllPlanesList(String pathtofile){
-        List <Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
-        List <Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
-        List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
-        allPlanesList.addAll(cargoPlanesList);
-        return allPlanesList;
-    }
-
-    public void printAllPlanesList(String pathtofile) throws FileNotFoundException{
-        if (pathtofile.length()>0) {
-            List<Plane> cargoPlanesList = generatePlanesList(pathtofile, "cargo");
-            List<Plane> passengerPlanesList = generatePlanesList(pathtofile, "passenger");
-            List<Plane> allPlanesList = new ArrayList<Plane>(passengerPlanesList);
-            allPlanesList.addAll(cargoPlanesList);
-            for (Plane plane : allPlanesList) {
-                System.out.println(plane.toString());
-            }
-        } else{
-            throw new FileNotFoundException();
-        }
-    }
-
-    public void sortPlanesByDistance(List<Plane> planesList) {
-        Collections.sort(planesList, new Comparator<Plane>() {
-            @Override
-            public int compare(Plane p1, Plane p2) {
-                if (p1.getAverageFlyingDistance() > p2.getAverageFlyingDistance())
-                    return 1;
-                if (p1.getAverageFlyingDistance() < p2.getAverageFlyingDistance())
-                    return -1;
-                return 0;
-            }
-        });
-        for (Plane plane:planesList  ) {
+    public void sortPlanesByDistance() {
+        Collections.sort(this.getPlanes(), new flyingDistanceComparator());
+        for(Plane plane: this.getPlanes()){
             System.out.println(plane.toString());
         }
 
-
-
     }
+    public void sortCompareTo (){
+        Collections.sort(this.getPlanes());
+        for(Plane plane: this.getPlanes()){
+            System.out.println(plane.toString());
+        }
+    }
+
 }

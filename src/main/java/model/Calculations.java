@@ -7,7 +7,7 @@ import java.util.List;
  */
 public interface Calculations {
 
-    int calculateNumberOfPassengers(List<Plane> passengerPlanesList);
-    int calculateCargoVolume(List<Plane> planesList);
+    int calculateNumberOfPassengers();
+    int calculateCargoVolume();
 
 }

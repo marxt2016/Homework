@@ -87,13 +87,13 @@ public class Parser {
         Map<String,List<String>> values1 = parser.parseDocument("D:\\workspace\\Homework\\resources\\planes.xml", "p");
         Map<String,List<String>> values = parser.parseDocument("D:\\workspace\\Homework\\resources\\planes.xml", "c");
        // System.out.println(values.values());
-        for (Object variableName: values.keySet()){
-            for (int i=0; i<values.get(variableName).size();i++ )
-            System.out.println(values.get(variableName).get(i));
+        for (Object item: values.keySet()){
+            for (int i=0; i<values.get(item).size();i++ )
+            System.out.println(values.get(item).get(i));
         }
-        for (Object variableName: values1.keySet()){
-            for (int i=0; i<values1.get(variableName).size();i++ )
-            System.out.println(values1.get(variableName).get(i));
+        for (Object item: values1.keySet()){
+            for (int i=0; i<values1.get(item).size();i++ )
+            System.out.println(values1.get(item).get(i));
         }
 
     }
