@@ -149,7 +149,7 @@ public class Aviacompany implements Calculations {
         }
 
     }
-    public void sortCompareTo (){
+    public void sortCompareTo (){ //sortPlanesByModel
         Collections.sort(this.getPlanes());
         for(Plane plane: this.getPlanes()){
             System.out.println(plane.toString());
