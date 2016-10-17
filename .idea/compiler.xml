@@ -23,10 +23,7 @@
         <outputRelativeToContentRoot value="true" />
         <processorPath useClasspath="true" />
         <module name="Homework" />
-        <module name="Mail" />
         <module name="Mail (1)" />
-        <module name="RZD" />
-        <module name="TAframework" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

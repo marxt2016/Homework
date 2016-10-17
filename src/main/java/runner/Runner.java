@@ -25,6 +25,8 @@ public class Runner {
                         "3 - search by model name and cargo volume;\n" +
                         "4 - provide total available number of passengers;\n" +
                         "5 - provide total available cargo capacity;\n" +
+                        "6 - add a new plane.\n"+
+                        "7 - delete a plane.\n"+
                         "0 - exit.");
 
                 Scanner scanner = new Scanner(System.in);
@@ -38,7 +40,7 @@ public class Runner {
                             break;
                         case 2:
                             //aviacompany.sortPlanesByDistance();
-                            aviacompany.sortCompareTo();
+                            aviacompany.sortPlanesByModel();
                             break;
                         case 3:
                             try {
@@ -52,6 +54,12 @@ public class Runner {
                             break;
                         case 5:
                             aviacompany.calculateCargoVolume();
+                            break;
+                        case 6:
+                            aviacompany.addNewPlane();
+                            break;
+                        case 7:
+                            aviacompany.deletePlane();
                             break;
                         case 0:
                             repeat = false;

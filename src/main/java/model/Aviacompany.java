@@ -8,7 +8,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.*;
 
 
@@ -68,6 +71,12 @@ public class Aviacompany implements Calculations {
         return (Aviacompany) parser.getObject(file, Aviacompany.class);
     }
 
+    public void addPlaneToFile() throws Exception{
+        JaxbParser parser = new JaxbParser();
+        File file = new File(PATH_TO_FILE);
+        parser.saveObject(file, this);
+    }
+
     public void printAllPlanes(){
         try {
             for (Plane plane: this.getPlanes()){
@@ -100,7 +109,7 @@ public class Aviacompany implements Calculations {
 
         try {
             for (Plane plane : this.getPlanes()) {
-                if (value1.equalsIgnoreCase(plane.getModel()) | (value2 == plane.getCargoVolume())) {
+                if (value1.equalsIgnoreCase(plane.getModel()) && (value2 == plane.getCargoVolume())) {
                     counter++;
                     results.add(plane);
                 }
@@ -149,11 +158,99 @@ public class Aviacompany implements Calculations {
         }
 
     }
-    public void sortCompareTo (){ //sortPlanesByModel
+    public void  sortPlanesByModel (){
         Collections.sort(this.getPlanes());
         for(Plane plane: this.getPlanes()){
             System.out.println(plane.toString());
         }
+    }
+
+    public void addNewPlane(){
+
+        Plane newPlane = new Plane();
+
+        System.out.println("Please, provide model name.");
+        String model = new Scanner(System.in).nextLine();
+        newPlane.setModel(model);
+
+        while(true) {
+            System.out.println("Please, provide cargo volume.");
+            try {
+                int cargoVolume = new Scanner(System.in).nextInt();
+                newPlane.setCargoVolume(cargoVolume);
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(" Incorrect value was provided.\n Please try one more time");
+            }
+
+        }
+        while(true) {
+            System.out.println("Please, provide number of seats.");
+            try {
+                int numberOfSeats = new Scanner(System.in).nextInt();
+                newPlane.setNumberOfSeats(numberOfSeats);
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(" Incorrect value was provided.\n Please try one more time");
+            }
+        }
+
+        while(true) {
+            System.out.println("Please, provide flying distance.");
+            try {
+                float flyingDistance = new Scanner(System.in).nextFloat();
+                newPlane.setAverageFlyingDistance(flyingDistance);
+                break;
+            } catch (InputMismatchException e) {
+                System.out.println(" Incorrect value was provided.\n Please try one more time");
+            }
+        }
+
+        this.planes.add(newPlane);
+        this.setPlanes(planes);
+
+        BufferedWriter bw = null;
+        try {
+            this.addPlaneToFile();
+            bw = new BufferedWriter(new FileWriter("./src/main/resources/addedPlanes.txt", true));
+            bw.write(newPlane.toString());
+            bw.newLine();
+            bw.flush();
+
+        }catch(Exception e){
+            e.printStackTrace();
+        }finally{
+            if (bw!=null) try{
+                bw.close();
+
+            }catch(IOException e){
+                e.printStackTrace();
+            }
+        }
+
+
+        System.out.println("New plane was added: "+newPlane.toString());
+        this.printAllPlanes();
+
+    }
+
+
+    public void deletePlane(){
+        try {
+            List <Plane> planesToDelete = this.searchPlaneByModelAndCargovolume();
+            System.out.println(planesToDelete.size());
+            List <Plane> result = this.getPlanes();
+            result.removeAll(planesToDelete);
+        }catch (FindByParametersException e){
+            e.getMessage();
+        }
+
+        try {
+            this.addPlaneToFile();
+        }catch(Exception e){
+            e.getMessage();
+        }
+        this.printAllPlanes();
     }
 
 }
