@@ -2,7 +2,9 @@ package runner;
 
 import exceptions.FindByParametersException;
 import model.Aviacompany;
+import org.h2.tools.DeleteDbFiles;
 
+import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -14,9 +16,14 @@ public class Runner {
 
     public static void main(String args[]) {
 
-
+        Aviacompany aviacompany = null;
         boolean repeat = true;
-
+        DeleteDbFiles.execute("D:/workspace/Homework/", "aviacompany", true);
+        try {
+            aviacompany = new Aviacompany().loadPlanesFromDB();
+        }catch(SQLException e){
+            System.out.println(e.getMessage());
+        }
         while (repeat) {
             try{
                 System.out.println("Please select an option: \n" +
@@ -31,49 +38,51 @@ public class Runner {
 
                 Scanner scanner = new Scanner(System.in);
                 int action = scanner.nextInt();
-                try {
-                    Aviacompany aviacompany = new Aviacompany().loadPlanesfromSource();
-                    switch (action) {
-                        case 1:
-                            System.out.println(aviacompany.getName());
-                            aviacompany.printAllPlanes();
-                            break;
-                        case 2:
-                            //aviacompany.sortPlanesByDistance();
-                            aviacompany.sortPlanesByModel();
-                            break;
-                        case 3:
-                            try {
-                                aviacompany.searchPlaneByModelAndCargovolume();
-                            }catch(FindByParametersException e) {
-                               System.out.println(e.getMessage());
-                            }
-                            break;
-                        case 4:
-                            aviacompany.calculateNumberOfPassengers();
-                            break;
-                        case 5:
-                            aviacompany.calculateCargoVolume();
-                            break;
-                        case 6:
-                            aviacompany.addNewPlane();
-                            break;
-                        case 7:
-                            aviacompany.deletePlane();
-                            break;
-                        case 0:
-                            repeat = false;
-                            break;
-                        default:
-                            break;
+                if (aviacompany!=null) {
+                    try {
+                        switch (action) {
+                            case 1:
+                                System.out.println(aviacompany.getName());
+                                aviacompany.printAllPlanes();
+                                break;
+                            case 2:
+                                aviacompany.sortPlanesByDistance();
+                                break;
+                            case 3:
+                                try {
+                                    aviacompany.searchPlaneByModelAndCargovolume();
+                                } catch (FindByParametersException e) {
+                                    System.out.println(e.getMessage());
+                                }
+                                break;
+                            case 4:
+                                aviacompany.calculateNumberOfPassengers();
+                                break;
+                            case 5:
+                                aviacompany.calculateCargoVolume();
+                                break;
+                            case 6:
+                                aviacompany.addNewPlane();
+                                break;
+                            case 7:
+                                aviacompany.deletePlane();
+                                break;
+                            case 0:
+                                repeat = false;
+                                break;
+                            default:
+                                break;
 
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
-                } catch (Exception e) {
-                    e.printStackTrace();
                 }
-            }catch(InputMismatchException e){
-                System.out.println("Incorrect value was provided \n Please try one more time.");
-            }
+                System.out.println("Aviacompany objects were not loaded");
+                }catch(InputMismatchException e){
+                    System.out.println("Incorrect value was provided \n Please try one more time.");
+                }
+
         }
     }
 }

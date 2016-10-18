@@ -1,7 +1,9 @@
 package model;
 
 import compare.flyingDistanceComparator;
+import db.h2DB;
 import exceptions.FindByParametersException;
+import org.h2.tools.DeleteDbFiles;
 import xmlParser.JaxbParser;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -12,6 +14,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.*;
 
 
@@ -65,11 +70,35 @@ public class Aviacompany implements Calculations {
     }
 
 
-    public Aviacompany loadPlanesfromSource() throws Exception{
+    public Aviacompany loadPlanesFromXMLSource() throws Exception{
         JaxbParser parser = new JaxbParser();
         File file = new File(PATH_TO_FILE);
         return (Aviacompany) parser.getObject(file, Aviacompany.class);
     }
+
+    public Aviacompany loadPlanesFromDB() throws SQLException {
+        Connection con=h2DB.getConnection();
+        List <Plane> planesList = new ArrayList<>();
+        h2DB.createWithPreparedStatement(con);
+        h2DB.insertWithPreparedStatement(con);
+
+        ResultSet rs = h2DB.selectPlanes(con);
+
+
+            while(rs.next()){
+                Plane p = new Plane(rs.getString("model"),
+                                    rs.getInt("cargoVolume"),
+                                    rs.getInt("numberOfSeats"),
+                                    rs.getFloat("averageRidingSpeed"),
+                                    rs.getFloat("averageFlyingSpeed"),
+                                    rs.getFloat("averageFlyingDistance"));
+                planesList.add(p);
+            }
+
+
+        return new Aviacompany("My Company", planesList);
+    }
+
 
     public void addPlaneToFile() throws Exception{
         JaxbParser parser = new JaxbParser();
