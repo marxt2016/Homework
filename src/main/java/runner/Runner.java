@@ -7,6 +7,7 @@ import org.h2.tools.DeleteDbFiles;
 import java.sql.SQLException;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.logging.Logger;
 
 /**
  * Created by qwer on 07.10.2016.
@@ -17,10 +18,13 @@ public class Runner {
     public static void main(String args[]) {
 
         Aviacompany aviacompany = null;
+        Logger logger = Logger.getLogger("test");
+
         boolean repeat = true;
         DeleteDbFiles.execute("D:/workspace/Homework/", "aviacompany", true);
         try {
             aviacompany = new Aviacompany().loadPlanesFromDB();
+            logger.info("Aviacompany was created");
         }catch(SQLException e){
             System.out.println(e.getMessage());
         }
@@ -75,13 +79,14 @@ public class Runner {
 
                         }
                     } catch (Exception e) {
+
                         e.printStackTrace();
+                        logger.info(e.getMessage());
                     }
                 }
-                System.out.println("Aviacompany objects were not loaded");
                 }catch(InputMismatchException e){
-                    System.out.println("Incorrect value was provided \n Please try one more time.");
-                }
+                System.out.println("Incorrect value was provided \n Please try one more time.");
+            }
 
         }
     }
